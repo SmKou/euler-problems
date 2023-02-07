@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>ProjectEuler: Multiples of 3 and 5</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="web_author" content="S.m. Kou">
+    <link rel="stylesheet" href="../smkou_rss/skeleton-styles.css">
+    <link rel="stylesheet" href="../smkou_rss/smkou-styles.css">
+    <link rel="stylesheet" href="../smkou_rss/euler.css">
+    <link rel="icon" href="../smkou_basics/projects-icon.png">
+</head>
+<body>
+    <main class="ctnr">
+        <h1>Multiples of 3 and 5</h1>
+        <fieldset>
+            <legend>Problem Description</legend>
+            <p>If we list all the natural numbers below 10 that are multiples of 3 or 5, we get 3, 5, 6 and 9. The sum of these multiples is 23.</p>
+            <p>Find the sum of all the multiples of 3 or 5 below 1000.</p>
+            <input id="test_num" type="number" min="1000" max="20000000" value="1000"/>
+        </fieldset>
+        <h2>Solutions</h2>
+        <ol>
+            <li>Brute force: <strong>Loop All Numbers</strong>
+                <div>Answer to problem: <span class='sol-1'></span>
+                    <br>Answer: <span class="sol-t-1"></span>
+                    <br>Time: <span class='t-1'></span> for <span class='max'></span></div>
+                <pre><code>
+function loopAllN() {
+    let sum = 0;
+    let n = 1;
+    do {
+        if (n % 3 == 0 || n % 5 == 0) {
+            sum += n;
+        }
+        n++;
+    } while (n < 1000)
+    return sum;
+}
+                </code></pre>
+            </li>
+            <li>Deliberate: <strong>Loop Only Multiples</strong>
+                <div>Answer: <span class='sol-2'></span>
+                    <br>Answer: <span class="sol-t-2"></span>
+                    <br>Time: <span class='t-2'></span> for <span class='max'></span></div>
+<pre><code>
+function loopNMult() {
+    let sum = 0;
+    let n = 1;
+    let s = n * 3;
+    while (s < 1000) {
+        sum += s;
+        s = n * 5;
+        if (s < 1000 && s % 3 != 0) { sum += s }
+        n++;
+        s = n * 3;
+    }
+    return sum;
+}
+</code></pre>
+            <strong>Alternative</strong>
+<pre><code>
+function loopNMult() {
+    let sum = 0;
+    let n = 1;
+    let s = n * 3;
+    while (s < 1000) {
+        sum += s;
+        s = n * 3;
+    }
+    s = n * 5;
+    while (s < 1000) {
+        if (s % 3 != 0) { sum += s }
+        n++;
+        s = n * 5;
+    }
+    return sum;
+}
+</code></pre>
+            </li>
+            <li>Deliberate: <strong>Loop Multiples with upper bound</strong>
+                <div>Answer: <span class='sol-3'></span>
+                    <br>Answer: <span class="sol-t-3"></span>
+                    <br>Time: <span class='t-3'></span> for <span class='max'></span></div>
+<pre><code>
+const UPPERBOUND = (n, max) => {
+    let bound = Math.floor(max / n);
+    if (max % n == 0) { bound -= 1 }
+    return bound;
+}
+function loopMult() {
+    let sum = 0;
+    let upperBound = UPPERBOUND(3, 1000);
+    for (let i = 0; i <= upperBound; i++) {
+        sum += (i * 3)
+    }
+    upperBound = UPPERBOUND(5, 1000);
+    for (let i = 0; i <= upperBound; i++) {
+        if ((i * 5) % 3 != 0) {
+            sum += (i * 5);
+        }
+    }
+    return sum;
+}
+</code></pre>
+            </li>
+        </ol>
+    </main>
+    <script src="./script.js"></script>
+    <script src="../smkou_rss/euler.js"></script>
+</body>
+</html>
